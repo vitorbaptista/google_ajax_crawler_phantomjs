@@ -20,6 +20,10 @@ module GoogleAjaxCrawler
       protected
 
       def configure
+        Capybara.register_driver :poltergeist do |app|
+          Capybara::Poltergeist::Driver.new(app, js_errors: false)
+        end
+
         Capybara.run_server     = false
         Capybara.current_driver = :poltergeist
         Capybara.default_wait_time = options.timeout
