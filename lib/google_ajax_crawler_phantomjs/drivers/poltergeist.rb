@@ -8,9 +8,9 @@ module GoogleAjaxCrawler
     class Poltergeist < Driver
       include Capybara::DSL
 
-      def initialize *args
-        super *args
-        configure
+      def initialize options
+        super options
+        configure options
       end
 
       def default_page_loaded_test
@@ -19,9 +19,13 @@ module GoogleAjaxCrawler
 
       protected
 
-      def configure
+      def configure options
         Capybara.register_driver :poltergeist do |app|
-          Capybara::Poltergeist::Driver.new(app, js_errors: false)
+          poltergeist_options = {
+            js_errors: false,
+            timeout: options.timeout
+          }
+          Capybara::Poltergeist::Driver.new(app, poltergeist_options)
         end
 
         Capybara.run_server     = false
